@@ -13,17 +13,24 @@ export const onCreateDocsNode = ({
   relativePath,
   createNodeField,
 }: OnCreateDocsNode) => {
-  const match = DOCS_FILENAME_REGEX.exec(relativePath);
-  if (!match || match.length < 6) return;
+  //TODO: Regex jest do śmieci
+  const splitted = relativePath.split("/");
+  if (splitted.length < 6) {
+    return;
+  }
 
-  const repositoryName = match[2];
-  const version = match[3];
-  const id = match[4].split("/")[0];
-  const fileName = match[5];
+  const version = splitted[2];
+  const id = splitted[3];
+  const additionPath = splitted.slice(4, splitted.length - 2);
+  const fileName = splitted[splitted.length - 1];
+
+  const match = DOCS_FILENAME_REGEX.exec(relativePath);
 
   let type = null;
   try {
-    type = require(`../../../../content/docs/${repositoryName}/${version}/${id}/docs.config.json`).spec.type.toLowerCase();
+    const docsPath = splitted.slice(0, splitted.length - 2).join("/");
+    const path = `../../../../content/${docsPath}/docs.config.json`;
+    type = require(path).spec.type.toLowerCase();
   } catch (err) {
     console.error(err);
     return;
@@ -40,7 +47,9 @@ export const onCreateDocsNode = ({
     },
   });
 
-  const slug = `/${DOCS_PATH_PREFIX}/${version}/${type}/${id}`;
+  const slug = [DOCS_PATH_PREFIX, version, type, id]
+    .concat(additionPath)
+    .join("/");
   createNodeField({
     node,
     name: "slug",

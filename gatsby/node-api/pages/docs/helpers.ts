@@ -81,6 +81,7 @@ export const prepareData = async ({
   );
   const docsArch: { [version: string]: DocsGeneratorReturnType } = {};
 
+  // TODO: tutaj wołany jest generator z danymi z Graphql.
   if (buildFor === BuildFor.DOCS_PREVIEW) {
     docsArch[""] = docsGenerator<DocGQL>(
       docs,
