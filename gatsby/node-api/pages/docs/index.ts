@@ -1,25 +1,24 @@
 import { existsSync } from "fs";
 import { resolve } from "path";
-import { createComponentDocsPage } from "./componentPage";
-import { createModalDocsPage } from "./modalPage";
-import { fixLinks } from "./fixLinks";
-import {
-  createDocsPage,
-  prepareData,
-  sortGroupOfNavigation,
-  prepareWebsitePaths,
-  preparePreviewPaths,
-} from "./helpers";
-import { DocsNavigation } from "../utils";
+import config from "../../../../config.json";
+import { BuildFor } from "../../../../src/types/common";
 import {
   CreatePageFn,
   CreateRedirectFn,
   GraphQLFunction,
 } from "../../../types";
-import { BuildFor } from "../../../../src/types/common";
+import { DocsNavigation } from "../utils";
+import { createComponentDocsPage } from "./componentPage";
+import { fixLinks } from "./fixLinks";
+import {
+  createDocsPage,
+  prepareData,
+  preparePreviewPaths,
+  prepareWebsitePaths,
+  sortGroupOfNavigation,
+} from "./helpers";
+import { createModalDocsPage } from "./modalPage";
 import { DocsRepository } from "./types";
-
-import config from "../../../../config.json";
 
 export interface CreateDocsPages {
   graphql: GraphQLFunction;
@@ -81,7 +80,7 @@ const createDocsPagesPerRepo = async (
     const sortedNavigation: DocsNavigation = sortGroupOfNavigation(navigation);
 
     Object.keys(content).map(docsType => {
-      const topics = content[docsType];
+      const topics = content[docsType].topics;
 
       Object.keys(topics).map(topic => {
         const {
@@ -98,7 +97,7 @@ const createDocsPagesPerRepo = async (
           topic,
         });
 
-        let fixedContent = content[docsType][topic];
+        let fixedContent = content[docsType].topics[topic];
         if (buildFor !== BuildFor.DOCS_PREVIEW) {
           fixedContent = fixLinks({
             content: fixedContent,

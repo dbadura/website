@@ -18,9 +18,16 @@ export interface DocsVersions {
 }
 
 export interface Docs {
-  content: DocsContent;
+  content: BtrDocsContent;
   navigation: DocsNavigation;
   manifest: ManifestSpec;
+}
+
+export interface BtrDocsContent {
+  [group: string]: {
+    items: { [item: string]: BtrDocsContent };
+    topics: { [topic: string]: DocsContentItem };
+  };
 }
 
 /* Content */

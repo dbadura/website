@@ -1,36 +1,35 @@
 import { ContentLoader } from "./contentLoader";
 import { extractSpecifications } from "./extractSpecifications";
+import { populateObject, sortDocsByOrder, sortDocsByType } from "./helpers";
 import {
+  BtrDocsContent,
   ContentGQL,
-  ManifestSpec,
-  ManifestItem,
-  DocsContent,
   DocsContentDocs,
+  ManifestItem,
+  ManifestSpec,
 } from "./types";
-import { sortDocsByOrder, sortDocsByType, populateObject } from "./helpers";
 
-export const extractContent = <T extends ContentGQL>({
-  manifestSpec,
-  contentGQLs,
-  contentLoader,
-  extractFn,
-}: {
-  manifestSpec: ManifestSpec;
-  contentGQLs: T[];
-  contentLoader: ContentLoader;
+export const extractContent = <T extends ContentGQL>(
+  manifestSpec: ManifestSpec,
+  contentGQLs: T[],
+  contentLoader: ContentLoader,
   extractFn: (
     doc: T,
     docsGroup: string,
     topicId: string,
-  ) => DocsContentDocs | null;
-}): DocsContent => {
-  const content: DocsContent = {} as DocsContent;
+  ) => DocsContentDocs | null,
+): BtrDocsContent => {
+  const content: BtrDocsContent = {} as BtrDocsContent;
 
-  Object.keys(manifestSpec).map(docsGroup => {
-    content[docsGroup] = {};
+  //FIXME refactor this
+  Object.keys(manifestSpec).forEach(docsGroup => {
+    content[docsGroup] = {
+      items: {},
+      topics: {},
+    };
     const topics = populateObject<ManifestItem>(manifestSpec[docsGroup]);
 
-    topics.map(topic => {
+    topics.forEach(topic => {
       const topicId = topic.id;
       const topicConfig = contentLoader.loadTopicConfig(topicId);
       const topicSpec = topicConfig.spec;
@@ -51,7 +50,7 @@ export const extractContent = <T extends ContentGQL>({
       topicDocs = sortDocsByOrder(topicDocs);
       topicDocs = sortDocsByType(topicDocs);
 
-      content[docsGroup][topicId] = {
+      content[docsGroup].topics[topicId] = {
         ...topicSpec,
         type: topicSpec.type.toLowerCase(),
         docs: topicDocs,

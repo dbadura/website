@@ -21,12 +21,12 @@ export const docsGenerator = <T extends ContentGQL>(
 
   const manifestSpec = loadManifest(contentLoader.loadManifest()).spec;
   const navigation = createNavigation(manifestSpec);
-  const content = extractContent<T>({
+  const content = extractContent<T>(
     manifestSpec,
     contentGQLs,
     contentLoader,
     extractFn,
-  });
+  );
 
   return {
     content,

@@ -1,14 +1,13 @@
+import { BuildFor } from "../../../../src/types/common";
+import { CreatePageFn, GraphQLFunction } from "../../../types";
 import { createComponentCommunityPage } from "./componentPage";
 import {
+  addCommunityPrefixInInternalLinks,
   createCommunityPage,
   prepareData,
-  prepareWebsitePaths,
   preparePreviewPaths,
-  addCommunityPrefixInInternalLinks,
+  prepareWebsitePaths,
 } from "./helpers";
-import { CreatePageFn, GraphQLFunction } from "../../../types";
-
-import { BuildFor } from "../../../../src/types/common";
 
 export interface CreateCommunityPages {
   graphql: GraphQLFunction;
@@ -28,7 +27,7 @@ export const createCommunityPages = async ({
   const { content, navigation, manifest } = await prepareData(graphql);
 
   Object.keys(content).map(docsType => {
-    const topics = content[docsType];
+    const topics = content[docsType].topics;
     const topicsKeys = Object.keys(topics);
 
     topicsKeys.map(topic => {
@@ -38,7 +37,7 @@ export const createCommunityPages = async ({
         topic,
       });
 
-      let sources = content[docsType][topic];
+      let sources = content[docsType].topics[topic];
       if (buildFor !== BuildFor.COMMUNITY_PREVIEW) {
         sources = addCommunityPrefixInInternalLinks(sources);
       }

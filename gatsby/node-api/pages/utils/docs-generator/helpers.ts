@@ -1,5 +1,5 @@
-import { ContentGQL, DocsContentDocs } from "./types";
 import { GraphQLFunction } from "../../../../types";
+import { ContentGQL, DocsContentDocs } from "./types";
 
 const getContent = async <T extends ContentGQL>(
   graphql: GraphQLFunction,
@@ -84,7 +84,7 @@ const sortFnByProperty = <T extends { [k: string]: any }>(sortBy: string) => (
   return 0;
 };
 
-const populateObject = <T = any>(obj: any | any[]): T[] => {
+const populateObject = <T>(obj: any | any[]): T[] => {
   if (Array.isArray(obj)) {
     return obj;
   }
