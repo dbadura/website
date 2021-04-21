@@ -1,7 +1,4 @@
-spec:
-  get-started:
-    - displayName: Get started
-      id: get-started
-  guidelines:
-    - displayName: Content
-      id: content
+get-started:
+  displayName: Get started
+content:
+  displayName: Content

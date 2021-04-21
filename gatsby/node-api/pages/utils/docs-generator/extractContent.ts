@@ -27,9 +27,10 @@ export const extractContent = <T extends ContentGQL>(
       items: {},
       topics: {},
     };
-    const topics = populateObject<ManifestItem>(manifestSpec[docsGroup].topics);
-    topics.forEach(topic => {
-      const topicId = topic.id;
+    const items = populateObject<ManifestItem>(manifestSpec[docsGroup].items);
+    items.forEach(item => {
+      // topics
+      const topicId = item.id;
       const topicConfig = contentLoader.loadTopicConfig(topicId);
       const topicSpec = topicConfig.spec;
       const topicSpecifications = extractSpecifications(
@@ -55,17 +56,18 @@ export const extractContent = <T extends ContentGQL>(
         docs: topicDocs,
         specifications: topicSpecifications,
       };
-    });
 
-    const items = populateObject<BtrDocsContent>(manifestSpec[docsGroup].items);
-    Object.keys(items).forEach(itemName => {
-      const extractedItem = extractContent(
-        manifestSpec[docsGroup].items[itemName],
-        contentGQLs,
-        contentLoader,
-        extractFn,
-      );
-      content[docsGroup].items[itemName] = extractedItem;
+      // items
+      // const items = populateObject<BtrDocsContent>(manifestSpec[docsGroup].items);
+      // Object.keys(items).forEach(itemName => {
+      //   const extractedItem = extractContent(
+      //     manifestSpec[docsGroup].items[itemName],
+      //     contentGQLs,
+      //     contentLoader,
+      //     extractFn,
+      //   );
+      //   content[docsGroup].items[itemName] = extractedItem;
+      // });
     });
   });
 

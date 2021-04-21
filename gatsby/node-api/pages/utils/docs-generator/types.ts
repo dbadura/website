@@ -77,6 +77,13 @@ export interface DocsNavigationTopic {
 export interface DocsManifest {
   spec: ManifestSpec;
 }
+
+export type NewManifestItem = {
+  displayName: string;
+  items: { [id: string]: NewManifestItem };
+};
+
+export type NewManifest = { [id: string]: NewManifestItem };
+
 export type ManifestSpec = DocsNavigation;
 export type ManifestItem = DocsNavigationTopic;
-export type NewManifest = BtrDocsContent;
