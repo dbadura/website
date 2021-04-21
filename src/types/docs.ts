@@ -91,11 +91,13 @@ export interface Specification {
   assetPath: string;
   pageUrl: string;
   githubUrl?: string;
+  //TODO: to sa metdatane z yamla lub jsona
   info: {
     version: string;
     title: string;
     description?: string;
     [key: string]: any;
   };
+  // TODO: zawartosc Yamla lub Jsona
   spec: any;
 }

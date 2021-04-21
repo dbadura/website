@@ -78,12 +78,14 @@ export interface DocsManifest {
   spec: ManifestSpec;
 }
 
-export type NewManifestItem = {
+export interface NewManifestItem {
   displayName: string;
   items: { [id: string]: NewManifestItem };
-};
+}
 
-export type NewManifest = { [id: string]: NewManifestItem };
+export interface NewManifest {
+  [id: string]: NewManifestItem;
+}
 
 export type ManifestSpec = DocsNavigation;
 export type ManifestItem = DocsNavigationTopic;

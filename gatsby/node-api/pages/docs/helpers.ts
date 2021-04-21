@@ -175,7 +175,7 @@ const extractDocsFn = (version: string) => (
     frontmatter: { title, type: docType },
   } = doc;
 
-  if (version === v && docsGroup === type && topicId === id) {
+  if (version === v && topicId === id) {
     const obj: DocsContentDocs = {
       order: fileName,
       title,
