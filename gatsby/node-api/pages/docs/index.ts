@@ -78,7 +78,7 @@ const createDocsPagesPerRepo = async (
     // const sortedNavigation: DocsNavigation = sortGroupOfNavigation(navigation);
 
     Object.keys(content).map(docsType => {
-      const topics = content[docsType].topics;
+      const topics = content[docsType].topic;
 
       Object.keys(topics).map(topic => {
         const {
@@ -95,7 +95,7 @@ const createDocsPagesPerRepo = async (
           topic,
         });
 
-        let fixedContent = content[docsType].topics[topic];
+        let fixedContent = content[docsType].topic;
         if (buildFor !== BuildFor.DOCS_PREVIEW) {
           fixedContent = fixLinks({
             content: fixedContent,

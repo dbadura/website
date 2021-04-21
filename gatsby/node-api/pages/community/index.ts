@@ -27,7 +27,7 @@ export const createCommunityPages = async ({
   const { content, manifest } = await prepareData(graphql);
 
   Object.keys(content).map(docsType => {
-    const topics = content[docsType].topics;
+    const topics = content[docsType].topic;
     const topicsKeys = Object.keys(topics);
 
     topicsKeys.map(topic => {
@@ -37,7 +37,7 @@ export const createCommunityPages = async ({
         topic,
       });
 
-      let sources = content[docsType].topics[topic];
+      let sources = content[docsType].topic;
       if (buildFor !== BuildFor.COMMUNITY_PREVIEW) {
         sources = addCommunityPrefixInInternalLinks(sources);
       }

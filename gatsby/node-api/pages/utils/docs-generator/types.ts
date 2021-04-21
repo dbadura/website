@@ -25,8 +25,8 @@ export interface Docs {
 
 export interface BtrDocsContent {
   [group: string]: {
-    items: { [item: string]: BtrDocsContent };
-    topics: { [topic: string]: DocsContentItem };
+    items: BtrDocsContent;
+    topic: DocsContentItem;
   };
 }
 
