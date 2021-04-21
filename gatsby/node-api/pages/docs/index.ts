@@ -7,7 +7,6 @@ import {
   CreateRedirectFn,
   GraphQLFunction,
 } from "../../../types";
-import { DocsNavigation } from "../utils";
 import { createComponentDocsPage } from "./componentPage";
 import { fixLinks } from "./fixLinks";
 import {
@@ -15,7 +14,6 @@ import {
   prepareData,
   preparePreviewPaths,
   prepareWebsitePaths,
-  sortGroupOfNavigation,
 } from "./helpers";
 import { createModalDocsPage } from "./modalPage";
 import { DocsRepository } from "./types";
@@ -76,8 +74,8 @@ const createDocsPagesPerRepo = async (
   const { versions, latestVersion, docsArch } = preparedData;
 
   Object.keys(docsArch).map(version => {
-    const { content, navigation } = docsArch[version];
-    const sortedNavigation: DocsNavigation = sortGroupOfNavigation(navigation);
+    const { content, manifest } = docsArch[version];
+    // const sortedNavigation: DocsNavigation = sortGroupOfNavigation(navigation);
 
     Object.keys(content).map(docsType => {
       const topics = content[docsType].topics;
@@ -114,8 +112,8 @@ const createDocsPagesPerRepo = async (
 
         const context = {
           content: fixedContent,
-          navigation: sortedNavigation,
-          manifest: sortedNavigation,
+          navigation: manifest,
+          manifest,
           versions,
           version,
           assetsPath,

@@ -79,3 +79,4 @@ export interface DocsManifest {
 }
 export type ManifestSpec = DocsNavigation;
 export type ManifestItem = DocsNavigationTopic;
+export type NewManifest = BtrDocsContent;

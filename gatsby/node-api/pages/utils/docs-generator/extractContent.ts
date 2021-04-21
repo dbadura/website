@@ -6,11 +6,11 @@ import {
   ContentGQL,
   DocsContentDocs,
   ManifestItem,
-  ManifestSpec,
+  NewManifest,
 } from "./types";
 
 export const extractContent = <T extends ContentGQL>(
-  manifestSpec: ManifestSpec,
+  manifestSpec: NewManifest,
   contentGQLs: T[],
   contentLoader: ContentLoader,
   extractFn: (
@@ -27,8 +27,7 @@ export const extractContent = <T extends ContentGQL>(
       items: {},
       topics: {},
     };
-    const topics = populateObject<ManifestItem>(manifestSpec[docsGroup]);
-
+    const topics = populateObject<ManifestItem>(manifestSpec[docsGroup].topics);
     topics.forEach(topic => {
       const topicId = topic.id;
       const topicConfig = contentLoader.loadTopicConfig(topicId);
@@ -40,7 +39,7 @@ export const extractContent = <T extends ContentGQL>(
       );
 
       let topicDocs: DocsContentDocs[] = [];
-      contentGQLs.map(doc => {
+      contentGQLs.forEach(doc => {
         const d = extractFn(doc, docsGroup, topicId);
         if (d && Object.keys(d)) {
           topicDocs.push(d);
@@ -56,6 +55,17 @@ export const extractContent = <T extends ContentGQL>(
         docs: topicDocs,
         specifications: topicSpecifications,
       };
+    });
+
+    const items = populateObject<BtrDocsContent>(manifestSpec[docsGroup].items);
+    Object.keys(items).forEach(itemName => {
+      const extractedItem = extractContent(
+        manifestSpec[docsGroup].items[itemName],
+        contentGQLs,
+        contentLoader,
+        extractFn,
+      );
+      content[docsGroup].items[itemName] = extractedItem;
     });
   });
 

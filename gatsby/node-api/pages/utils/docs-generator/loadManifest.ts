@@ -1,5 +1,5 @@
 import { safeLoad } from "js-yaml";
-import { DocsManifest } from "./types";
+import { NewManifest } from "./types";
 
-export const loadManifest = (yaml: string): DocsManifest =>
-  safeLoad(yaml) as DocsManifest;
+export const loadManifest = (yaml: string): NewManifest =>
+  safeLoad(yaml) as NewManifest;

@@ -1,7 +1,6 @@
 import { ContentLoader } from "./contentLoader";
 import { extractContent } from "./extractContent";
 import { loadManifest } from "./loadManifest";
-import { createNavigation } from "./createNavigation";
 import { ContentGQL, DocsContentDocs } from "./types";
 
 const contentLoader = new ContentLoader();
@@ -19,8 +18,8 @@ export const docsGenerator = <T extends ContentGQL>(
   contentLoader.setFolder(folder);
   contentLoader.setVersion(version ? version : "");
 
-  const manifestSpec = loadManifest(contentLoader.loadManifest()).spec;
-  const navigation = createNavigation(manifestSpec);
+  const manifestSpec = loadManifest(contentLoader.loadManifest());
+  // const navigation = createNavigation(manifestSpec);
   const content = extractContent<T>(
     manifestSpec,
     contentGQLs,
@@ -30,7 +29,7 @@ export const docsGenerator = <T extends ContentGQL>(
 
   return {
     content,
-    navigation,
+    navigation: manifestSpec,
     manifest: manifestSpec,
   };
 };

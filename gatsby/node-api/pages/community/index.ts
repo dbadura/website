@@ -24,7 +24,7 @@ export const createCommunityPages = async ({
     buildFor === BuildFor.COMMUNITY_PREVIEW
       ? preparePreviewPaths
       : prepareWebsitePaths;
-  const { content, navigation, manifest } = await prepareData(graphql);
+  const { content, manifest } = await prepareData(graphql);
 
   Object.keys(content).map(docsType => {
     const topics = content[docsType].topics;
@@ -44,7 +44,7 @@ export const createCommunityPages = async ({
 
       const context = {
         content: sources,
-        navigation,
+        navigation: manifest,
         manifest,
         assetsPath,
         docsType,
