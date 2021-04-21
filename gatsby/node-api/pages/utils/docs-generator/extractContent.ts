@@ -44,13 +44,13 @@ export const extractContent = <T extends ContentGQL>(
         topicDocs.push(d);
       }
     });
-    //iterate over items and do the same
+    // iterate over items and do the same
 
     topicDocs = sortDocsByOrder(topicDocs);
     topicDocs = sortDocsByType(topicDocs);
 
     const topicSpec = docsConfig.spec;
-    //TODO: Tutaj mamy już dużo poprawnych dancyh, wiec pora na stworzenie wynikowego node'a
+    // TODO: Tutaj mamy już dużo poprawnych dancyh, wiec pora na stworzenie wynikowego node'a
     // i przejscie po itemach w dół.
     content[id].topic = {
       ...topicSpec,
@@ -59,13 +59,20 @@ export const extractContent = <T extends ContentGQL>(
       specifications: topicSpecifications,
     };
 
-    Object.keys(item.items).forEach(itemName => {
+    const newContentLoader = new ContentLoader();
+    const newPath = `${contentLoader.getVersion()}/${id}`;
+
+    newContentLoader.setFolder(contentLoader.getFolder());
+    newContentLoader.setVersion(newPath);
+
+    Object.keys(item.items || {}).forEach(itemName => {
       const extractedItem = extractContent(
-        { [itemName]: item },
+        { [itemName]: item.items[itemName] },
         contentGQLs,
-        contentLoader,
+        newContentLoader,
         extractFn,
       );
+      content[id].items[itemName] = extractedItem[itemName];
     });
   });
   return content;

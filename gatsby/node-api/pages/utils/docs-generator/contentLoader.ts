@@ -15,8 +15,16 @@ export class ContentLoader {
     this.version = version;
   }
 
+  getVersion(): string {
+    return this.version;
+  }
+
   setFolder(folder: string) {
     this.folder = folder;
+  }
+
+  getFolder(): string {
+    return this.folder;
   }
 
   loadManifest() {
