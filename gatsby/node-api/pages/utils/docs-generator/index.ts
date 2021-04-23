@@ -6,7 +6,7 @@ import { ContentGQL, DocsContentDocs } from "./types";
 const contentLoader = new ContentLoader();
 
 export const docsGenerator = <T extends ContentGQL>(
-  contentGQLs: T[],
+  docs: T[],
   folder: string,
   extractFn: (
     doc: T,
@@ -22,9 +22,10 @@ export const docsGenerator = <T extends ContentGQL>(
   // const navigation = createNavigation(manifestSpec);
   const content = extractContent<T>(
     manifestSpec,
-    contentGQLs,
+    docs,
     contentLoader,
     extractFn,
+    "",
   );
 
   return {

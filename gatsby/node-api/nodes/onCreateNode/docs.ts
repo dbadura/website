@@ -13,8 +13,8 @@ export const onCreateDocsNode = ({
   relativePath,
   createNodeField,
 }: OnCreateDocsNode) => {
-  //TODO: Regex jest do śmieci
   const splitted = relativePath.split("/");
+  // TODO: add more description to the relative Path how it should be build
   if (splitted.length < 6) {
     return;
   }
@@ -24,7 +24,10 @@ export const onCreateDocsNode = ({
   const additionPath = splitted.slice(4, splitted.length - 2);
   const fileName = splitted[splitted.length - 1];
 
-  const match = DOCS_FILENAME_REGEX.exec(relativePath);
+  let newID = id;
+  if (additionPath.length !== 0) {
+    newID = `${newID}/` + additionPath.join("/");
+  }
 
   let type = null;
   try {
@@ -40,7 +43,7 @@ export const onCreateDocsNode = ({
     node,
     name: "docInfo",
     value: {
-      id,
+      id: newID,
       type,
       version,
       fileName,

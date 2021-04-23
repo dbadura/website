@@ -18,10 +18,18 @@ export const extractContent = <T extends ContentGQL>(
     docsGroup: string,
     topicId: string,
   ) => DocsContentDocs | null,
+  compoundID: string,
 ): BtrDocsContent => {
   const content: BtrDocsContent = {};
 
+  const parentID = compoundID;
   Object.keys(manifestSpec).forEach((id: string) => {
+    if (parentID === "") {
+      compoundID = id;
+    } else {
+      compoundID = `${compoundID}/${id}`;
+    }
+
     const item = manifestSpec[id];
     // create content placeholder
     content[id] = {
@@ -37,9 +45,10 @@ export const extractContent = <T extends ContentGQL>(
       docsConfig.specifications,
     );
 
+    // TODO: Dla nodów niżej nie ładują się poprawnie markdowny ;(
     let topicDocs: DocsContentDocs[] = [];
     contentGQLs.map(doc => {
-      const d = extractFn(doc, "", id);
+      const d = extractFn(doc, "", compoundID);
       if (d && Object.keys(d)) {
         topicDocs.push(d);
       }
@@ -50,8 +59,6 @@ export const extractContent = <T extends ContentGQL>(
     topicDocs = sortDocsByType(topicDocs);
 
     const topicSpec = docsConfig.spec;
-    // TODO: Tutaj mamy już dużo poprawnych dancyh, wiec pora na stworzenie wynikowego node'a
-    // i przejscie po itemach w dół.
     content[id].topic = {
       ...topicSpec,
       type: topicSpec.type.toLowerCase(),
@@ -71,6 +78,7 @@ export const extractContent = <T extends ContentGQL>(
         contentGQLs,
         newContentLoader,
         extractFn,
+        compoundID,
       );
       content[id].items[itemName] = extractedItem[itemName];
     });
