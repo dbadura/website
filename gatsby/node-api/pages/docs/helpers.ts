@@ -169,7 +169,7 @@ const extractDocsFn = (version: string) => (
   const {
     rawMarkdownBody,
     fields: {
-      docInfo: { id, type, version: v, fileName },
+      docInfo: { id, version: v, fileName },
       imagesSpec,
     },
     frontmatter: { title, type: docType },
@@ -251,7 +251,6 @@ export const preparePreviewPaths = ({
   repositoryName,
   version,
   latestVersion,
-  docsType,
   topic,
 }: DocsPathsArgs): DocsPaths => {
   const v =
@@ -259,9 +258,9 @@ export const preparePreviewPaths = ({
 
   const assetsPath = `/${ASSETS_DIR}${DOCS_DIR}${repositoryName}/${v}/${topic}/${DOCS_DIR}${ASSETS_DIR}`;
   const specificationsPath = `/${ASSETS_DIR}${DOCS_DIR}${repositoryName}/${v}/${topic}/${DOCS_SPECIFICATIONS_PATH}`;
-  const pagePath = `/${version ? `${version}/` : ""}${docsType}/${topic}`;
+  const pagePath = `/${version ? `${version}/` : ""}${topic}`;
   const rootPagePath = `/${version}`;
-  const modalUrlPrefix = `/${docsType}/${topic}/${DOCS_SPECIFICATIONS_PATH}`;
+  const modalUrlPrefix = `/${topic}/${DOCS_SPECIFICATIONS_PATH}`;
 
   return {
     assetsPath,

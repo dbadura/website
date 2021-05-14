@@ -77,63 +77,66 @@ const createDocsPagesPerRepo = async (
     const { content, manifest } = docsArch[version];
     // const sortedNavigation: DocsNavigation = sortGroupOfNavigation(navigation);
 
-    Object.keys(content).map(docsType => {
-      const topics = content[docsType].topic;
+    // nie mamy docs type, trzeba przeiterować po czymś innym. po topicach
+    // content.topics.forEach(topic => {
+    //
+    // })
 
-      Object.keys(topics).map(topic => {
-        const {
-          assetsPath,
-          specificationsPath,
-          modalUrlPrefix,
-          pagePath,
-          rootPagePath,
-        } = preparePaths({
-          repositoryName,
-          version,
-          latestVersion: latestVersion || "",
-          docsType,
-          topic,
-        });
+    // content jest naszym pięknym nowym drzewem
+    Object.keys(content).map(docName => {
+      const topic = content[docName].topic;
 
-        let fixedContent = content[docsType].topic;
-        if (buildFor !== BuildFor.DOCS_PREVIEW) {
-          fixedContent = fixLinks({
-            content: fixedContent,
-            version,
-          });
-        }
-        const specifications = fixedContent.specifications.map(
-          specification => ({
-            ...specification,
-            assetPath: `${specificationsPath}/${specification.assetPath}`,
-            pageUrl: `${modalUrlPrefix}/${specification.id}`,
-          }),
-        );
-
-        const context = {
-          content: fixedContent,
-          navigation: manifest,
-          manifest,
-          versions,
-          version,
-          assetsPath,
-          docsType,
-          topic,
-          specifications,
-          repositoryName,
-        };
-
-        const createPage = createDocsPage(createPageFn, context);
-        createComponentDocsPage({
-          createPage,
-          createRedirect,
-          context,
-          path: pagePath,
-          rootPath: rootPagePath,
-          repository,
-        });
-        createModalDocsPage({ createPage, context });
+      // Topic is the path to the asset, so we have to build the complex one
+      const {
+        assetsPath,
+        specificationsPath,
+        modalUrlPrefix,
+        pagePath,
+        rootPagePath,
+      } = preparePaths({
+        repositoryName,
+        version,
+        latestVersion: latestVersion || "",
+        docsType: docName,
+        topic: docName,
       });
+
+      let fixedTopic = content[docName].topic;
+      if (buildFor !== BuildFor.DOCS_PREVIEW) {
+        fixedTopic = fixLinks({
+          content: topic,
+          version,
+        });
+      }
+      const specifications = topic.specifications.map(specification => ({
+        ...specification,
+        assetPath: `${specificationsPath}/${specification.assetPath}`,
+        pageUrl: `${modalUrlPrefix}/${specification.id}`,
+      }));
+
+      const context = {
+        content: fixedTopic,
+        navigation: manifest,
+        manifest,
+        versions,
+        version,
+        assetsPath,
+        docsType: docName,
+        topic,
+        specifications,
+        repositoryName,
+      };
+
+      const createPage = createDocsPage(createPageFn, context);
+      createComponentDocsPage({
+        createPage,
+        createRedirect,
+        context,
+        path: pagePath,
+        rootPath: rootPagePath,
+        repository,
+      });
+      createModalDocsPage({ createPage, context });
     });
   });
 };

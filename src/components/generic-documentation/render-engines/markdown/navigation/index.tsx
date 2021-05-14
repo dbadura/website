@@ -50,6 +50,8 @@ function renderList(
   activeLinkFn?: activeLinkChecker,
   showGroups?: boolean,
 ): React.ReactNode {
+  // tslint:disable-next-line:no-console
+  console.log(items);
   const list = items.map(item => (
     <NavigationListItem
       active={
