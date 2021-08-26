@@ -45,7 +45,7 @@ export const Heading: React.FunctionComponent<HeadingProps> = ({
   }
   heading = removeMarkdownSyntax(heading);
   heading = toKebabCase(heading);
-  heading = `${headingPrefix}-${heading}`;
+  // heading = `${headingPrefix}-${heading}`;
 
   if (headings.has(heading)) {
     const splittedHeading = heading.split("-");
